@@ -3,11 +3,11 @@
     <h1>My Todo List</h1>
     <div id="canvas">
       <form @submit.prevent="addNewTodo">
-        <input class="todo-input" type="text" placeholder="Enter a todo here" v-model="newTodo">
+        <input class="todo-input" type="text" placeholder="Enter a todo task here" v-model="newTodo">
         <button class="todo-button" type="submit">Save</button>
       </form>
-      <div class="todos" v-for="todo in todos" :key="todo.id">
-        <p>{{todo.task}}</p>
+      <div class="todos" v-for="todo in todos" :key="todo.id" v-bind:class="{'completed':todo.completed == true}">
+        <p class="todo">{{todo.task}}</p>
         <div class="icons">
           <p class="icon icon-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -19,7 +19,7 @@
               <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
             </svg>
           </p>
-          <p class="icon icon-3">
+          <p class="icon icon-3" v-on:click="markAsComplete(todo)">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
             </svg>
@@ -49,33 +49,44 @@ export default {
       todos : [
         {
           id:1,
-          task:"Wake up"
+          task:"Wake up",
+          completed: false
         },
         {
           id:2,
-          task:"Have morning devotion"
+          task:"Have morning devotion",
+          completed: false
         },
         {
           id:3,
-          task:"Perform house chores"
+          task:"Perform house chores",
+          completed: false
         },
         {
           id:4,
-          task:"Have breakfast"
+          task:"Have breakfast",
+          completed: false
         },
         {
           id:5,
-          task:"Read a book"
+          task:"Read a book",
+          completed: false
         },
       ]
     }
   },
   methods: {
     addNewTodo() {
-      this.todos.push({id:this.newId, task:this.newTodo})
+      this.todos.push({id:this.newId, task:this.newTodo, completed: false})
           this.newTodo = ""
           this.newId++
 
+    },
+    markAsComplete(todo) {
+      todo.completed = true
+      if (todo.completed == true) {
+        console.log("It's done")
+      }
     }
   }
 }
@@ -99,15 +110,20 @@ export default {
   align-items: center;
 }
 .todos {
-  width: 50%;
+  width: 40%;
   text-align: center;
   display: flex;
   /*flex-direction: column;*/
   justify-content: space-between;
   align-items: center;
 }
+
+/*.todo {*/
+/*  background: bisque;*/
+/*}*/
 .todo-input {
-  padding: 10px 30px;
+  padding: 10px 50px;
+  margin-bottom: 20px;
 }
 
 .todo-button {
@@ -140,6 +156,10 @@ export default {
 }
 .icons {
   display: flex;
+}
+
+.completed {
+  text-decoration: line-through;
 }
 </style>
 
